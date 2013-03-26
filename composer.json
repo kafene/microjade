@@ -1,0 +1,18 @@
+{
+    "name": "unu/microjade",
+    "authors": [
+        {
+            "name": "Honza Novak",
+            "email": "hi@honzanovak.com"
+        }
+    ],
+    "require": {
+
+    },
+    "require-dev": {
+        "tracy/tracy": "dev-master"
+    },
+    "autoload": {
+      "classmap": ["src/"]
+    }
+}
