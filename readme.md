@@ -11,12 +11,12 @@ Converts templates with [jade][]-like syntax to PHP.
 - `// html comment`
 - `//- php comment`
 - `doctype 5`
+- `| text` in TextNode
 
 ## Todo
 
 - `- code` and `= $var` in PhpNode
 - `.class#id` in HtmlNode
-- `| text` in TextNode
 - `#{}` and `\#{}` in Node
 - escape text in Node
 - `//if lt IE 8` in CommentNode
@@ -25,9 +25,8 @@ Converts templates with [jade][]-like syntax to PHP.
 ## Usage
 
 ```php
-$input = file_get_contents(__DIR__ . '/example.jade');
-$output = Microjade\Parser::parse($input);
-file_put_contents(__DIR__ . '/example.php', $output);
+$template = Microjade\Parser::parseFile('example.jade');
+file_put_contents('example.php', $template);
 
 require(__DIR__ . '/example.php');
 ```

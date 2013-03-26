@@ -4,9 +4,10 @@ namespace Microjade;
 
 class HtmlNode extends Node{
 
-  const REGEX_ELEMENT = '{^(?<tag>[\w\d]+) (?:\((?<attr>.*)\))? (?<unformated>\.?) (?<text>.*)$}x';
+  const REGEX_ELEMENT = '{^\s*(?<tag>[\w\d]+) (?:\((?<attr>.*)\))? (?<unformated>\.?) (?<text>.*)$}x';
 
   public function __construct($line){
+    parent::__construct($line);
     if (preg_match(self::REGEX_ELEMENT, $line, $m)){
       $this->openingTag = '<' . $m['tag']
         . ($m['attr'] ? ' ' : '') . $m['attr'] . '>';
