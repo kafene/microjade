@@ -14,6 +14,9 @@ Converts templates with [jade][]-like syntax to PHP.
 - `doctype 5`
 - escapes html in text
 - `- code`, `= $var` and `!= $var`
+- [Latte][] macros supported
+
+[latte]: http://doc.nette.org/en/default-macros
 
 ## Todo
 

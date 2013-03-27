@@ -3,19 +3,24 @@ html(lang="en" data-type="test")
 
   head
     title Hello
-    p inline text
-      | another text
-    - $x = 1
-    = $x
-      . 'multi'
-      . 'line'
-    != $x
 
-  body
-    h1 title
-    //
-      block
-      <comment>
-    p.
-      unformated
-      | <text>
+  {block #main}
+    body
+      {if}
+        h1 title
+      {else}
+        h1 Hi
+      p. inline text
+        | another text
+      - $x = 1
+      = $x
+        . 'multi'
+        . 'line'
+      != $x
+
+      //
+        block
+        <comment>
+      #id.class
+        unformated
+        | <text>

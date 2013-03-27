@@ -32,3 +32,4 @@ eval('?>' . preg_replace(
   '<?php echo htmlspecialchars($\1)?>',
   ob_get_clean()
 ));
+eval('?>' . $output);

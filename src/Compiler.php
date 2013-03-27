@@ -28,14 +28,6 @@ class Compiler {
       if ($parentNode !== false && $parentNode->getIndent() >= $indent)
         $parentNode = false;
 
-      $closingTags = null;
-      foreach ($closing as $key => $item){
-        if ($key >= $indent){
-          $closingTags = $item . $closingTags;
-          $closing = array_diff_key($closing, array($key => true));
-        }
-      }
-
       if ($parentNode !== false && $parentNode->hasFilter())
         $node = $parentNode->filter($line);
       else
@@ -43,6 +35,15 @@ class Compiler {
 
       if ($node->hasFilter())
         $parentNode = $node;
+
+      $closingTags = null;
+      foreach ($closing as $key => $item){
+        if ($key >= $indent){
+          if (!($key == $indent && $node->isElseTag()))
+            $closingTags = $item . $closingTags;
+          $closing = array_diff_key($closing, array($key => true));
+        }
+      }
 
       $closing[$indent] = $node->getClosingTag();
 

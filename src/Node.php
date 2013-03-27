@@ -5,11 +5,12 @@ namespace Microjade;
 class Node{
 
   const PATTERN = '{.*}';
-  protected $openingTag = null;
-  protected $closingTag = null;
+  protected $openingTag;
+  protected $closingTag;
   protected $text;
   protected $line;
   protected $filter;
+  protected $elseTag;
 
   public function __construct($line){
     $this->line = $line;
@@ -38,6 +39,10 @@ class Node{
 
   public function getText(){
     return $this->text;
+  }
+
+  public function isElseTag(){
+    return $this->elseTag;
   }
 
   public function hasFilter(){
