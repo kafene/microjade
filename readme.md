@@ -13,10 +13,10 @@ Converts templates with [jade][]-like syntax to PHP.
 - `//- php comment`
 - `doctype 5`
 - escapes html in text
+- `- code`, `= $var` and `!= $var`
 
 ## Todo
 
-- `- code` and `= $var` in PhpNode
 - `.class#id` in HtmlNode
 - `#{}` and `\#{}` in Node
 - `//if lt IE 8` in CommentNode

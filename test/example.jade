@@ -1,9 +1,14 @@
 doctype 5
 html(lang="en" data-type="test")
+
   head
     title Hello
     p inline text
       | another text
+    - $x = 1
+    = $x
+    != $x
+
   body
     h1 title
     //

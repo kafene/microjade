@@ -4,22 +4,27 @@ namespace Microjade;
 
 class Parser {
 
+  const REGEX_EMPTY_LINE = '{^\s*$}';
+
   public static function parseFile($filename){
     return self::parse(file_get_contents($filename));
   }
 
   public static function parse($template){
     $template = str_replace("\r", '', $template);
-    $lines = explode("\n", $template . "\n");
-    $indent = 0;
+    $lines = explode("\n", rtrim($template) . "\n");
     $output = null;
+    $emptyLines = null;
     $closing = array();
     $unformated = false;
 
     foreach ($lines as $n => $line){
+      if (preg_match(self::REGEX_EMPTY_LINE, $line) && $n != count($lines) - 1){
+        $emptyLines .= "\n";
+        continue;
+      }
+
       $indent = (mb_strlen($line) - mb_strlen(ltrim($line)));
-      $indentString = mb_substr($line, 0, $indent);
-      //$line = ltrim($line);
       if ($unformated !== false && $indent <= $unformated)
         $unformated = false;
 
@@ -31,22 +36,24 @@ class Parser {
         }
       }
 
-      $isText = ($unformated !== false && $indent > $unformated);
-      $node = self::getNode($line, $isText);
+      $node = self::getNode($line, $unformated !== false);
       $closing[$indent] = $node->getClosingTag();
       if ($node->isUnformated())
         $unformated = $indent;
+
       if (class_exists('\Tracy\Debugger'))
         \Tracy\Debugger::barDump($node);
 
-      $output .= $closingTags . "\n" . $node->getIndentString()
-        . $node->getOpeningTag() . $node->getText();
+      $output .= $closingTags . "\n" . $emptyLines
+        . $node->getIndentString() . $node->getOpeningTag()
+        . $node->getText();
+      $emptyLines = null;
     }
     return trim($output);
   }
 
-  private static function getNode($line, $isText = false){
-    if ($isText)
+  private static function getNode($line, $isUnformated = false){
+    if ($isUnformated)
       return new TextNode($line, true);
     elseif (TextNode::test($line))
       return new TextNode($line);
@@ -56,6 +63,8 @@ class Parser {
       return new CommentNode($line);
     elseif (HtmlNode::test($line))
       return new HtmlNode($line);
+    elseif (PhpNode::test($line))
+      return new PhpNode($line);
     else
       return new Node($line);
   }
