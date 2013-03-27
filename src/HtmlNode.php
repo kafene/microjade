@@ -5,6 +5,8 @@ namespace Microjade;
 class HtmlNode extends Node{
 
   const PATTERN = '{^\s* (?<tag>[\w\d#\.]+) (?:\((?<attr>.*)\))? (?<unformated>\.?) (?<text>.*)$}x';
+  private $selfClosing = 'area base br col hr img input link meta source';
+
 
   public function __construct($line){
     parent::__construct($line);
@@ -22,11 +24,13 @@ class HtmlNode extends Node{
         elseif (!empty($parts[$i]))
           $tag = $parts[$i];
       }
+      if (!in_array($tag, explode(' ', $this->selfClosing)))
+        $this->closingTag = '</' . $tag . '>';
       $this->openingTag = '<' . $tag
         . ($ids ? ' id="' .  implode(' ', $ids) . '"' : '')
         . ($classes ? ' class="' .  implode(' ', $classes) . '"' : '')
-        . ($m['attr'] ? ' ' : '') . $m['attr'] . '>';
-      $this->closingTag = '</' . $tag . '>';
+        . ($m['attr'] ? ' ' : '') . $m['attr']
+        . ($this->closingTag ? '>' : '/>');
       $this->text = trim($m['text']);
       if (!empty($m['unformated']))
         $this->filter = [$this, 'filter'];

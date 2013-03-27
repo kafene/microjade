@@ -21,7 +21,6 @@ Converts templates with [jade][]-like syntax to PHP.
 
 ## Todo
 
-    <meta ../>       - self-closing html tags
     #{} and \#{}     - inline php code
     //if lt IE 8     - conditional comments
 
