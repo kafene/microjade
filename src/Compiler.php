@@ -68,6 +68,8 @@ class Compiler {
       return new HtmlNode($line);
     elseif (PhpNode::test($line))
       return new PhpNode($line);
+    elseif (LatteNode::test($line))
+      return new LatteNode($line);
     else
       return new TextNode($line, 0);
   }

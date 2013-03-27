@@ -4,11 +4,11 @@ namespace Microjade;
 
 class PhpNode extends Node{
 
-  const REGEX_CODE = '{^\s*(?<sign>\-|\!?=)\s*(?<code>.*)}';
+  const PATTERN = '{^\s*(?<sign>\-|\!?=)\s*(?<code>.*)}';
 
   public function __construct($line){
     parent::__construct($line);
-    if (preg_match(self::REGEX_CODE, $line, $m)){
+    if (preg_match(self::PATTERN, $line, $m)){
       $this->openingTag = '<?php ';
       $this->closingTag = ' ?>';
 
@@ -21,13 +21,8 @@ class PhpNode extends Node{
       }
 
       $this->text = trim($m['code']);
-      $this->unformated = true;
       $this->filter = [$this, 'filter'];
     }
-  }
-
-  public static function test($line){
-    return preg_match(self::REGEX_CODE, $line);
   }
 
   public function filter($line){

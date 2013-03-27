@@ -4,6 +4,7 @@ namespace Microjade;
 
 class Node{
 
+  const PATTERN = '{.*}';
   protected $openingTag = null;
   protected $closingTag = null;
   protected $text;
@@ -12,6 +13,11 @@ class Node{
 
   public function __construct($line){
     $this->line = $line;
+  }
+
+  public static function test($line){
+    $className = get_called_class();
+    return preg_match($className::PATTERN, $line);
   }
 
   public function getIndent(){

@@ -4,7 +4,8 @@ namespace Microjade;
 
 class DoctypeNode extends Node{
 
-  const REGEX_DOCTYPE = '{^\s*doctype( .*)?$}';
+  const PATTERN = '{^\s*doctype( .*)?$}';
+
   private $doctypes = [
     'default' => '<!DOCTYPE html>',
     '5' => '<!DOCTYPE html>',
@@ -19,15 +20,11 @@ class DoctypeNode extends Node{
 
   public function __construct($line){
     parent::__construct($line);
-    if (preg_match(self::REGEX_DOCTYPE, $line, $matches)){
+    if (preg_match(self::PATTERN, $line, $matches)){
       $version = isset($matches) ? mb_strtolower(trim($matches[1])) : 'default';
       if (!array_key_exists($version, $this->doctypes))
         $version = 'default';
       $this->openingTag = $this->doctypes[$version];
     }
-  }
-
-  public static function test($line){
-    return preg_match(self::REGEX_DOCTYPE, $line);
   }
 }

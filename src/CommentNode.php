@@ -4,14 +4,14 @@ namespace Microjade;
 
 class CommentNode extends Node{
 
-  const REGEX_COMMENT = '{^\s*//\-?(.*)$}';
-  const REGEX_COMMENT_HIDDEN = '{^\s*//\-.*$}';
+  const PATTERN = '{^\s*//\-?(.*)$}';
+  const PATTERN_HIDDEN= '{^\s*//\-.*$}';
 
   public function __construct($line){
     parent::__construct($line);
-    if (preg_match(self::REGEX_COMMENT, $line, $matches)){
+    if (preg_match(self::PATTERN, $line, $matches)){
       $this->text = trim($matches[1]);
-      if (preg_match(self::REGEX_COMMENT_HIDDEN, $line)){
+      if (preg_match(self::PATTERN_HIDDEN, $line)){
         $this->openingTag = '<?php /* ';
         $this->closingTag = ' */ ?>';
       }
@@ -20,13 +20,8 @@ class CommentNode extends Node{
         $this->closingTag = ' -->';
         $this->text = htmlspecialchars($this->text);
       }
-      $this->unformated = true;
       $this->filter = [$this, 'filter'];
     }
-  }
-
-  public static function test($line){
-    return preg_match(self::REGEX_COMMENT, $line);
   }
 
   public function filter($line){

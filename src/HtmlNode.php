@@ -4,11 +4,11 @@ namespace Microjade;
 
 class HtmlNode extends Node{
 
-  const REGEX_ELEMENT = '{^\s*(?<tag>[\w\d]+) (?:\((?<attr>.*)\))? (?<unformated>\.?) (?<text>.*)$}x';
+  const PATTERN = '{^\s*(?<tag>[\w\d]+) (?:\((?<attr>.*)\))? (?<unformated>\.?) (?<text>.*)$}x';
 
   public function __construct($line){
     parent::__construct($line);
-    if (preg_match(self::REGEX_ELEMENT, $line, $m)){
+    if (preg_match(self::PATTERN, $line, $m)){
       $this->openingTag = '<' . $m['tag']
         . ($m['attr'] ? ' ' : '') . $m['attr'] . '>';
       $this->closingTag = '</' . $m['tag'] . '>';
@@ -16,10 +16,6 @@ class HtmlNode extends Node{
       if (!empty($m['unformated']))
         $this->filter = [$this, 'filter'];
     }
-  }
-
-  public static function test($line){
-    return preg_match(self::REGEX_ELEMENT, $line);
   }
 
   public function filter($line){

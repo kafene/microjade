@@ -4,7 +4,7 @@ namespace Microjade;
 
 class TextNode extends Node{
 
-  const REGEX_TEXT = '{^\s*\|\s*(.*)$}';
+  const PATTERN = '{^\s*\|\s*(.*)$}';
   const STRIP = 1;
   const TRIM = 2;
   const ESCAPE = 4;
@@ -17,11 +17,7 @@ class TextNode extends Node{
     if ($flags & self::ESCAPE)
       $this->text = htmlspecialchars($this->text);
     if ($flags & self::STRIP)
-      $this->text = preg_replace(self::REGEX_TEXT, '\1', $this->text);
-  }
-
-  public static function test($line){
-    return preg_match(self::REGEX_TEXT, $line);
+      $this->text = preg_replace(self::PATTERN, '\1', $this->text);
   }
 
   public function getIndentString(){
