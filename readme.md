@@ -1,29 +1,29 @@
 # Microjade
 
 Converts templates with [jade][]-like syntax to PHP.
+[Latte][] macros are also supported.
 
 [jade]: https://github.com/visionmedia/jade
+[latte]: http://doc.nette.org/en/default-macros
 
 ## Done
 
-- `p(id="t1") Text.` - basic html tags
-- `textarea.` - unformated text in tags
-- `| text` - unformated text
-- `// html comment`
-- `//- php comment`
-- `doctype 5`
-- escapes html in text
-- `- code`, `= $var` and `!= $var`
-- [Latte][] macros supported
-- `.class#id` in HtmlNode
-
-[latte]: http://doc.nette.org/en/default-macros
+    doctype 5        - doctypes
+    p(id="t1") Text  - html tags
+    .class#id        - implicit div
+    textarea.        - unformated blocks
+    | text           - unformated lines
+    - code           - php code
+    = $var           - escaped variable
+    != $var          - unescaped variable
+    // comment       - html comment
+    //- comment      - unbuffered comment
 
 ## Todo
 
-- `#{}` and `\#{}` in Node
-- `//if lt IE 8` in CommentNode
-- `h1(title = $var)` in HtmlNode
+    <meta ../>       - self-closing html tags
+    #{} and \#{}     - inline php code
+    //if lt IE 8     - conditional comments
 
 ## Usage
 
