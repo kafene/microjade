@@ -25,7 +25,7 @@ Converts templates with [jade][]-like syntax to PHP.
 ## Usage
 
 ```php
-$template = Microjade\Parser::parseFile('example.jade');
+$template = Microjade\Compiler::compileFile('example.jade');
 file_put_contents('example.php', $template);
 
 require(__DIR__ . '/example.php');

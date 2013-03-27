@@ -6,7 +6,7 @@ if (class_exists('\Tracy\Debugger'))
   \Tracy\Debugger::enable();
 
 $input = file_get_contents(__DIR__ . '/example.jade');
-$output = Microjade\Parser::parse($input);
+$output = Microjade\Compiler::compile($input);
 
 
 ob_start();

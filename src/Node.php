@@ -37,6 +37,7 @@ class Node{
   public function hasFilter(){
     return is_callable($this->filter);
   }
+
   public function filter($line){
     return call_user_func($this->filter, $line);
   }

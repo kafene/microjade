@@ -2,15 +2,15 @@
 
 namespace Microjade;
 
-class Parser {
+class Compiler {
 
   const REGEX_EMPTY_LINE = '{^\s*$}';
 
-  public static function parseFile($filename){
-    return self::parse(file_get_contents($filename));
+  public static function compileFile($filename){
+    return self::compile(file_get_contents($filename));
   }
 
-  public static function parse($template){
+  public static function compile($template){
     $template = str_replace("\r", '', $template);
     $lines = explode("\n", rtrim($template) . "\n");
     $output = null;
