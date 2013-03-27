@@ -18,7 +18,6 @@ class CommentNode extends Node{
       else{
         $this->openingTag = '<!-- ';
         $this->closingTag = ' -->';
-        $this->text = htmlspecialchars($this->text);
       }
       $this->filter = [$this, 'filter'];
     }

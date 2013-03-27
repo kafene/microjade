@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/../src/microjade.php');
 
 if (class_exists('\Tracy\Debugger'))
   \Tracy\Debugger::enable();

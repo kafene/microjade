@@ -15,12 +15,12 @@ Converts templates with [jade][]-like syntax to PHP.
 - escapes html in text
 - `- code`, `= $var` and `!= $var`
 - [Latte][] macros supported
+- `.class#id` in HtmlNode
 
 [latte]: http://doc.nette.org/en/default-macros
 
 ## Todo
 
-- `.class#id` in HtmlNode
 - `#{}` and `\#{}` in Node
 - `//if lt IE 8` in CommentNode
 - `h1(title = $var)` in HtmlNode
