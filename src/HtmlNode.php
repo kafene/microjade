@@ -16,7 +16,10 @@ class HtmlNode extends Node{
       $tag = 'div';
       for ($i = 0; $i < count($parts); $i++){
         if ($parts[$i] == '.'){
-          $classes[] = $parts[$i++ + 1];
+          if (empty($parts[$i + 1]))
+            $m['unformated'] = '.';
+          else
+            $classes[] = $parts[$i++ + 1];
         }
         elseif ($parts[$i] == '#'){
           $ids[] = $parts[$i++ + 1];
