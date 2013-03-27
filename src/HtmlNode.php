@@ -13,11 +13,16 @@ class HtmlNode extends Node{
         . ($m['attr'] ? ' ' : '') . $m['attr'] . '>';
       $this->closingTag = '</' . $m['tag'] . '>';
       $this->text = htmlspecialchars(trim($m['text']));
-      $this->unformated = !empty($m['unformated']);
+      if (!empty($m['unformated']))
+        $this->filter = [$this, 'filter'];
     }
   }
 
   public static function test($line){
     return preg_match(self::REGEX_ELEMENT, $line);
+  }
+
+  public function filter($line){
+    return new TextNode($line, TextNode::TRIM);
   }
 }

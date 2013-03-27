@@ -22,10 +22,15 @@ class PhpNode extends Node{
 
       $this->text = trim($m['code']);
       $this->unformated = true;
+      $this->filter = [$this, 'filter'];
     }
   }
 
   public static function test($line){
     return preg_match(self::REGEX_CODE, $line);
+  }
+
+  public function filter($line){
+    return new TextNode($line);
   }
 }

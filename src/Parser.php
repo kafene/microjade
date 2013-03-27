@@ -16,7 +16,7 @@ class Parser {
     $output = null;
     $emptyLines = null;
     $closing = array();
-    $unformated = false;
+    $parentNode = false;
 
     foreach ($lines as $n => $line){
       if (preg_match(self::REGEX_EMPTY_LINE, $line) && $n != count($lines) - 1){
@@ -25,8 +25,8 @@ class Parser {
       }
 
       $indent = (mb_strlen($line) - mb_strlen(ltrim($line)));
-      if ($unformated !== false && $indent <= $unformated)
-        $unformated = false;
+      if ($parentNode !== false && $parentNode->getIndent() >= $indent)
+        $parentNode = false;
 
       $closingTags = null;
       foreach ($closing as $key => $item){
@@ -36,10 +36,15 @@ class Parser {
         }
       }
 
-      $node = self::getNode($line, $unformated !== false);
+      if ($parentNode !== false && $parentNode->hasFilter())
+        $node = $parentNode->filter($line);
+      else
+        $node = self::getNode($line);
+
+      if ($node->hasFilter())
+        $parentNode = $node;
+
       $closing[$indent] = $node->getClosingTag();
-      if ($node->isUnformated())
-        $unformated = $indent;
 
       if (class_exists('\Tracy\Debugger'))
         \Tracy\Debugger::barDump($node);
@@ -52,10 +57,8 @@ class Parser {
     return trim($output);
   }
 
-  private static function getNode($line, $isUnformated = false){
-    if ($isUnformated)
-      return new TextNode($line, true);
-    elseif (TextNode::test($line))
+  private static function getNode($line){
+    if (TextNode::test($line))
       return new TextNode($line);
     elseif (DoctypeNode::test($line))
       return new DoctypeNode($line);
@@ -66,6 +69,6 @@ class Parser {
     elseif (PhpNode::test($line))
       return new PhpNode($line);
     else
-      return new Node($line);
+      return new TextNode($line, 0);
   }
 }

@@ -21,10 +21,15 @@ class CommentNode extends Node{
         $this->text = htmlspecialchars($this->text);
       }
       $this->unformated = true;
+      $this->filter = [$this, 'filter'];
     }
   }
 
   public static function test($line){
     return preg_match(self::REGEX_COMMENT, $line);
+  }
+
+  public function filter($line){
+    return new TextNode($line, 0);
   }
 }

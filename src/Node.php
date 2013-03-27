@@ -6,9 +6,9 @@ class Node{
 
   protected $openingTag = null;
   protected $closingTag = null;
-  protected $unformated = false;
   protected $text;
   protected $line;
+  protected $filter;
 
   public function __construct($line){
     $this->line = $line;
@@ -34,7 +34,10 @@ class Node{
     return $this->text;
   }
 
-  public function isUnformated(){
-    return $this->unformated;
+  public function hasFilter(){
+    return is_callable($this->filter);
+  }
+  public function filter($line){
+    return call_user_func($this->filter, $line);
   }
 }
