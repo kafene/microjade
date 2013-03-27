@@ -12,7 +12,7 @@ class HtmlNode extends Node{
       $this->openingTag = '<' . $m['tag']
         . ($m['attr'] ? ' ' : '') . $m['attr'] . '>';
       $this->closingTag = '</' . $m['tag'] . '>';
-      $this->text = trim($m['text']);
+      $this->text = htmlspecialchars(trim($m['text']));
       $this->unformated = !empty($m['unformated']);
     }
   }

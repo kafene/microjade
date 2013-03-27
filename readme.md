@@ -8,17 +8,17 @@ Converts templates with [jade][]-like syntax to PHP.
 
 - `p(id="t1") Text.` - basic html tags
 - `textarea.` - unformated text in tags
+- `| text` - unformated text
 - `// html comment`
 - `//- php comment`
 - `doctype 5`
-- `| text` in TextNode
+- escapes html in text
 
 ## Todo
 
 - `- code` and `= $var` in PhpNode
 - `.class#id` in HtmlNode
 - `#{}` and `\#{}` in Node
-- escape text in Node
 - `//if lt IE 8` in CommentNode
 - `h1(title = $var)` in HtmlNode
 

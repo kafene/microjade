@@ -12,6 +12,7 @@ class TextNode extends Node{
       $this->text = $line;
     else
       $this->text = preg_replace(self::REGEX_TEXT, '\1', $line);
+    $this->text = htmlspecialchars($this->text);
   }
 
   public static function test($line){
