@@ -21,11 +21,9 @@ class PhpNode extends Node{
       }
 
       $this->text = trim($m['code']);
-      $this->filter = [$this, 'filter'];
+      $this->filter = function($line){
+        return new TextNode($line);
+      };
     }
-  }
-
-  public function filter($line){
-    return new TextNode($line);
   }
 }

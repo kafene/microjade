@@ -19,11 +19,9 @@ class CommentNode extends Node{
         $this->openingTag = '<!-- ';
         $this->closingTag = ' -->';
       }
-      $this->filter = [$this, 'filter'];
+      $this->filter = function($line){
+        return new TextNode($line, 0);
+      };
     }
-  }
-
-  public function filter($line){
-    return new TextNode($line, 0);
   }
 }
