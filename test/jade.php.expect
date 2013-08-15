@@ -1,5 +1,5 @@
 Tests php code in jade
-string(375) "
+string(432) "
 
 <?php $x = "<b>value</b>" ?>
 <?php echo htmlspecialchars("escaped: " . $x, ENT_QUOTES) ?>
@@ -10,10 +10,14 @@ string(375) "
 <p><?php echo htmlspecialchars("inline code", ENT_QUOTES) ?></p>
 <p><?php $x = 1 ?></p>
 <p><?php echo htmlspecialchars($x, ENT_QUOTES) ?></p>
+<p><?php echo $x ?></p>
+<p><?php echo "unescaped" ?></p>
 "
-string(115) "
+string(141) "
 escaped: &lt;b&gt;value&lt;/b&gt;unescaped: <b>value</b><p>php in element</p>
 <p>inline code</p>
 <p></p>
 <p>1</p>
+<p>1</p>
+<p>unescaped</p>
 "
