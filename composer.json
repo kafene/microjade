@@ -1,0 +1,12 @@
+{
+    "name": "unu/microjade",
+    "authors": [
+        {
+            "name": "Honza Novak",
+            "email": "hi@honzanovak.com"
+        }
+    ],
+    "autoload": {
+      "classmap": ["src/"]
+    }
+}
