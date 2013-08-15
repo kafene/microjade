@@ -1,0 +1,28 @@
+Tests php blocks in jade
+string(718) "
+
+<?php $i = 1 ?>
+<blocks>
+  <?php if(isset($content)) echo $content; else{ ob_start();$_blocks[]="content" ?>
+    hello<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?>
+  <?php if (true): ?>
+    <p>ok</p>
+    <?php if (false): ?>
+      <p>nested</p>
+    <?php else: ?>
+      <p>nested</p><?php endif ?>
+  <?php else: ?>
+    <p>liar</p><?php endif ?>
+  <ul><?php while ($i <= 3): ?>
+    <li><?php echo htmlspecialchars($i++, ENT_QUOTES) ?></li><?php endwhile ?></ul></blocks>
+<inline>
+  <?php if (true): ?>x<?php else: ?>y<?php endif ?>
+  <?php if(isset($content)) echo $content; else{ ob_start();$_blocks[]="content" ?>world<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?></inline>
+"
+string(158) "
+<blocks>
+      hello      <p>ok</p>
+          <p>nested</p>    <ul>    <li>1</li>    <li>2</li>    <li>3</li></ul></blocks>
+<inline>
+  x      hello</inline>
+"

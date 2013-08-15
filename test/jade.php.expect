@@ -1,0 +1,19 @@
+Tests php code in jade
+string(375) "
+
+<?php $x = "<b>value</b>" ?>
+<?php echo htmlspecialchars("escaped: " . $x, ENT_QUOTES) ?>
+<?php echo "unescaped: " . $x ?>
+<?php # comment ?>
+<?php # {$notphp} ?>
+<p><?php echo htmlspecialchars("php in element", ENT_QUOTES) ?></p>
+<p><?php echo htmlspecialchars("inline code", ENT_QUOTES) ?></p>
+<p><?php $x = 1 ?></p>
+<p><?php echo htmlspecialchars($x, ENT_QUOTES) ?></p>
+"
+string(115) "
+escaped: &lt;b&gt;value&lt;/b&gt;unescaped: <b>value</b><p>php in element</p>
+<p>inline code</p>
+<p></p>
+<p>1</p>
+"

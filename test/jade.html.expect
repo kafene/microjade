@@ -1,0 +1,24 @@
+Tests html elements in jade
+string(386) "
+
+<!DOCTYPE html>
+<html lang="en" data-type="test" flag><body>
+  <ul class="x" title="list">
+    <li class="y" title="item"><b>multilevel</b></li></ul>
+  <p><?php echo htmlspecialchars("inline code", ENT_QUOTES) ?></p>
+  <div id="id" class="class another">default element is div</div>
+  <pre class="class">
+text</pre>
+<div id="id3" class="class">should set id3 only</div></body></html>
+"
+string(339) "
+<!DOCTYPE html>
+<html lang="en" data-type="test" flag><body>
+  <ul class="x" title="list">
+    <li class="y" title="item"><b>multilevel</b></li></ul>
+  <p>inline code</p>
+  <div id="id" class="class another">default element is div</div>
+  <pre class="class">
+text</pre>
+<div id="id3" class="class">should set id3 only</div></body></html>
+"

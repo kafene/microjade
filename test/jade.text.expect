@@ -1,0 +1,14 @@
+Test text nodes in jade
+string(214) "
+
+<?php $x = 1 ?>
+<p>unescaped text in html > <?php echo htmlspecialchars($x, ENT_QUOTES) ?></p>
+ unescaped text block > <?php echo htmlspecialchars($x, ENT_QUOTES) ?>
+<pre>
+  escaped text, not php &gt; {$x}</pre>
+"
+string(106) "
+<p>unescaped text in html > 1</p>
+ unescaped text block > 1<pre>
+  escaped text, not php &gt; {$x}</pre>
+"
