@@ -1,4 +1,4 @@
-Test text nodes in jade
+Tests text nodes in jade
 <?php
 require __DIR__ . '/setup.inc';
 

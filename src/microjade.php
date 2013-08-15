@@ -4,7 +4,7 @@ class Microjade{
 
   static private $patterns = [
     'block' => '~^(if|else|elseif|for|foreach|while|block)\b\s*(.*)$~',
-    'php' => '~^(\-|=|\$|\!=)\s*(.*)$~',
+    'php' => '~^(\-|=|\$|\!=?)\s*(.*)$~',
     'html' => '~^([\w\d_\.\#\-]+)(.*)$~',
     'text' => '~^(\|)?(.*)$~'
   ];
@@ -76,7 +76,7 @@ class Microjade{
     $token = self::$token;
     $m = array_fill(0, 5, null);
     preg_match('~^([\w\d\-_]+)?  ([\.\#][\w\d\-_\.\#]*[\w\d])?
-      (\([^\)]+\))?  (\.)?  ((\-|=|\!=)|:)? \s* (.*) ~x', $line, $m);
+      (\([^\)]+\))?  (\.)?  ((\-|=|\!=?)|:)? \s* (.*) ~x', $line, $m);
     $token['open'] = empty($m[1]) ? '<div' : "<$m[1]";
     $token['close'] = empty($m[1]) ? '</div>' : "</$m[1]>";
     if (!empty($m[2])){
@@ -103,7 +103,7 @@ class Microjade{
     $token = self::$token;
     if ($type == '-')
       $token['open'] = "<?php $code ?>";
-    elseif ($type == '!=')
+    elseif ($type == '!=' || $type == '!')
       $token['open'] = "<?php echo $code ?>";
     elseif ($type == '=')
       $token['open'] = "<?php echo htmlspecialchars($code, ENT_QUOTES) ?>";
