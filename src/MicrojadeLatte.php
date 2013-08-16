@@ -14,7 +14,7 @@ class MicrojadeLatte extends Microjade{
   }
 
   protected function parsePhp($line, $type, $code){
-    $token = $this->token;
+    $token = $this->emptyToken;
     if ($type == '-'){
       $token['open'] = "{? $code}";
       $keyword = preg_replace('~\s.*~', '', $code);
