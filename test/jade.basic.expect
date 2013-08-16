@@ -16,18 +16,3 @@ string(270) "
         <li><b>item2</b></li>
         <li><b>item3</b></li></ul></div></body></html>
 "
-string(269) "
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello</title>
-  </head>
-  <body>
-    <div class="menu"></div>
-    <div id="content">
-      <ul>
-         text
-        <li><b>item1</b></li>
-        <li><b>item2</b></li>
-        <li><b>item3</b></li></ul></div></body></html>
-"

@@ -5,6 +5,7 @@ require __DIR__ . '/setup.inc';
 $compile('
 <!DOCTYPE html>
 html(lang="en" data-type="test" flag  ): body
+  head: link(rel="selfclosing")/
   ul.x(title="list")
     li.y(title="item"): b multilevel
   p {="inline code"}

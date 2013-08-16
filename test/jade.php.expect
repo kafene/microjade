@@ -13,11 +13,3 @@ string(432) "
 <p><?php echo $x ?></p>
 <p><?php echo "unescaped" ?></p>
 "
-string(141) "
-escaped: &lt;b&gt;value&lt;/b&gt;unescaped: <b>value</b><p>php in element</p>
-<p>inline code</p>
-<p></p>
-<p>1</p>
-<p>1</p>
-<p>unescaped</p>
-"

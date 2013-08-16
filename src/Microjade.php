@@ -2,29 +2,29 @@
 
 class Microjade{
 
-  static private $patterns = [
+  protected $patterns = [
     'block' => '~^(if|else|elseif|for|foreach|while|block)\b\s*(.*)$~',
     'php' => '~^(\-|=|\$|\!=?)\s*(.*)$~',
     'html' => '~^([\w\d_\.\#\-]+)(.*)$~',
     'text' => '~^(\|)?(.*)$~'
   ];
-  static private $token = [
+  protected $token = [
     'open' => null, 'close' => null,
     'else' => false, 'textBlock' => false
   ];
 
-  static public function compile($input, $showIndent = false){
+  public function compile($input, $showIndent = false){
     $lines = explode("\n", str_replace("\r", '', $input));
     $output = $textBlock = null;
-    $closing = array();
+    $closing = [];
     foreach ($lines as $n => $line){
-      $token = self::$token;
+      $token = $this->token;
       $indent = mb_strlen($line) - mb_strlen(ltrim($line));
       $indentStr = ($showIndent && !$textBlock) ? str_repeat(' ', $indent) : '';
       if ($textBlock !== null && $textBlock < $indent)
         $token['open'] = htmlspecialchars(ltrim($line));
       else{
-        $token = self::parseLine($line);
+        $token = $this->parseLine($line);
         $textBlock = null;
       }
       foreach (array_reverse($closing, true) as $i => $code){
@@ -41,23 +41,23 @@ class Microjade{
     return $output;
   }
 
-  static private function parseLine($line){
+  protected function parseLine($line){
     $line = trim($line, "\t\n ");
-    $token = self::$token;
-    foreach (self::$patterns as $name => $pattern){
+    $token = $this->token;
+    foreach ($this->patterns as $name => $pattern){
       if (preg_match($pattern, $line, $match)){
         if ($name == 'text')
-          $token['open'] = self::parseInline($match[2]);
+          $token['open'] = $this->parseInline($match[2]);
         else
-          $token = call_user_func_array("self::parse" . ucfirst($name), $match);
+          $token = call_user_func_array([$this, "parse" . ucfirst($name)], $match);
         break;
       }
     }
     return $token;
   }
 
-  static private function parseBlock($line, $type, $code){
-    $token = self::$token;
+  protected function parseBlock($line, $type, $code){
+    $token = $this->token;
     if ($type == 'block'){
       $token['open'] = "<?php if(isset(\$$code)) echo \$$code; else{ ob_start();\$_blocks[]=\"$code\" ?>";
       $token['close'] = '<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?>';
@@ -72,11 +72,11 @@ class Microjade{
     return $token;
   }
 
-  static private function parseHtml($line, $type, $code){
-    $token = self::$token;
+  protected function parseHtml($line, $type, $code){
+    $token = $this->token;
     $m = array_fill(0, 5, null);
-    preg_match('~^([\w\d\-_]+)?  ([\.\#][\w\d\-_\.\#]*[\w\d])?
-      (\([^\)]+\))?  (\.)?  ((\-|=|\!=?)|:)? \s* (.*) ~x', $line, $m);
+    preg_match('~^([\w\d\-_]+)? ([\.\#][\w\d\-_\.\#]*[\w\d])?
+      (\([^\)]+\))? (/)? (\.)? ((\-|=|\!=?)|:)? \s* (.*) ~x', $line, $m);
     $token['open'] = empty($m[1]) ? '<div' : "<$m[1]";
     $token['close'] = empty($m[1]) ? '</div>' : "</$m[1]>";
     if (!empty($m[2])){
@@ -87,20 +87,22 @@ class Microjade{
       $token['open'] .= $classes ? ' class="' . trim($classes) . '"' : '';
     }
     if (!empty($m[3]))
-      $token['open'] .= ' ' . self::parseInline(trim($m[3], '() '));
-    $token['textBlock'] = !empty($m[4]);
-    if (!empty($m[5])){
-      $nexttoken = self::parseLine($m[6] . $m[7]);
-      $token['open'] .= '>' . $nexttoken['open'];
+      $token['open'] .= ' ' . $this->parseInline(trim($m[3], '() '));
+    $token['close'] = empty($m[4]) ? $token['close'] : '';
+    $token['open'] .= empty($m[4]) ? '>' : " />";
+    $token['textBlock'] = !empty($m[5]);
+    if (!empty($m[6])){
+      $nexttoken = $this->parseLine($m[7] . $m[8]);
+      $token['open'] .= $nexttoken['open'];
       $token['close'] = $nexttoken['close'] . $token['close'];
     }
     else
-      $token['open'] .= ">" . self::parseInline($m[7]);
+      $token['open'] .= $this->parseInline($m[8]);
     return $token;
   }
 
-  static private function parsePhp($line, $type, $code){
-    $token = self::$token;
+  protected function parsePhp($line, $type, $code){
+    $token = $this->token;
     if ($type == '-')
       $token['open'] = "<?php $code ?>";
     elseif ($type == '!=' || $type == '!')
@@ -112,11 +114,11 @@ class Microjade{
     return $token;
   }
 
-  static private function parseInline($input){
+  protected function parseInline($input){
     return preg_replace_callback('~{ (/?) ([^\}\n]*) }~x', function($m){
-      if (preg_match(self::$patterns['block'], $m[2])
-         || preg_match(self::$patterns['php'], $m[2])){
-        $token = self::parseLine($m[2]);
+      if (preg_match($this->patterns['block'], $m[2])
+         || preg_match($this->patterns['php'], $m[2])){
+        $token = $this->parseLine($m[2]);
         return empty($m[1]) ? $token['open'] : $token['close'];
       }
       return $m[0];

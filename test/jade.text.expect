@@ -7,8 +7,3 @@ string(214) "
 <pre>
   escaped text, not php &gt; {$x}</pre>
 "
-string(106) "
-<p>unescaped text in html > 1</p>
- unescaped text block > 1<pre>
-  escaped text, not php &gt; {$x}</pre>
-"

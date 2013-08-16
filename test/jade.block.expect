@@ -19,10 +19,3 @@ string(718) "
   <?php if (true): ?>x<?php else: ?>y<?php endif ?>
   <?php if(isset($content)) echo $content; else{ ob_start();$_blocks[]="content" ?>world<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?></inline>
 "
-string(158) "
-<blocks>
-      hello      <p>ok</p>
-          <p>nested</p>    <ul>    <li>1</li>    <li>2</li>    <li>3</li></ul></blocks>
-<inline>
-  x      hello</inline>
-"

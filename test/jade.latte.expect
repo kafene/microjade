@@ -1,0 +1,19 @@
+Tests MicrojadeLatte class
+string(259) "
+
+{? $x = 1}
+<!DOCTYPE html>
+{if $x > 1}
+  <p>{"x: " . $x}</p>
+{elseif $x == 1}
+  <p class="{!$x}">text</p>
+{else}
+   text{/if}
+<div class="footer">{}</div>
+{cache}
+  <p>cached</p>{/cache}
+{block a}
+  <b>inblock</b>{/block}
+{? nopair}
+<div class="end"></div>
+"
