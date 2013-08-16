@@ -1,6 +1,6 @@
-Tests php code in jade
+Php code in jade
 <?php
-require __DIR__ . '/setup.inc';
+require __DIR__ . '/setup.php';
 
 $compile('
 - $x = "<b>value</b>"

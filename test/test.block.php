@@ -1,6 +1,6 @@
-Tests php blocks in jade
+Php blocks in jade
 <?php
-require __DIR__ . '/setup.inc';
+require __DIR__ . '/setup.php';
 
 $compile('
 -$i = 1

@@ -1,10 +1,9 @@
-Tests comment nodes in jade
-string(91) "
+Comment blocks in jade
+string(90) "
 
 <?php /* single-line comment */ ?>
 <div>
   <?php /* multi line
 comment
 here */ ?></div>
-
 "

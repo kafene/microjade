@@ -1,6 +1,6 @@
-Tests text nodes in jade
+Text blocks in jade
 <?php
-require __DIR__ . '/setup.inc';
+require __DIR__ . '/setup.php';
 
 $compile('
 -$x = 1

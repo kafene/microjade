@@ -1,4 +1,4 @@
-Tests MicrojadeLatte class
+MicrojadeLatte test
 <?php
 require __DIR__ . '/../src/MicrojadeLatte.php';
 

@@ -1,6 +1,6 @@
-Tests html elements in jade
+Html elements in jade
 <?php
-require __DIR__ . '/setup.inc';
+require __DIR__ . '/setup.php';
 
 $compile('
 <!DOCTYPE html>

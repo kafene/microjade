@@ -27,6 +27,7 @@ For usage in Nette Framework see [nette.md](nette.md).
     = $var           - escaped variable
     != $var          - unescaped variable
     -# comment       - single-line comment
+    // comment       - html block comment
     textarea.        - unformated block
     if, while, for.. - php blocks
     block name       - print $name or saves block to $name

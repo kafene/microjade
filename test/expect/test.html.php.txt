@@ -1,4 +1,4 @@
-Tests html elements in jade
+Html elements in jade
 string(428) "
 
 <!DOCTYPE html>

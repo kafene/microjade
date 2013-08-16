@@ -1,4 +1,4 @@
-Tests php blocks in jade
+Php blocks in jade
 string(718) "
 
 <?php $i = 1 ?>

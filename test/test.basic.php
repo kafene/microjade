@@ -1,7 +1,6 @@
-Tests basic jade structure and element nesting
-
+Basic jade structures and element nesting
 <?php
-require __DIR__ . '/setup.inc';
+require __DIR__ . '/setup.php';
 
 $compile('
 <!DOCTYPE html>

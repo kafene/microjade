@@ -1,5 +1,4 @@
-Tests basic jade structure and element nesting
-
+Basic jade structures and element nesting
 string(270) "
 
 <!DOCTYPE html>

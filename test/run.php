@@ -1,30 +1,39 @@
 <?php
-if (php_sapi_name() != 'cli') header("Content-Type: text/plain");
+/**
+ * Beast PHP test runner
+ * Runs all ./test.*.php files and prints results.
+ * Exit codes that can be used in scripts:
+ * 0: compare output with expect/$filename.txt
+ * 1: failed, 2: skipped, 3: passed
+ */
+header("Content-Type: text/plain");
 $fail = $pass = $skip = 0;
 chdir(isset($argv[1]) ? $argv[1] : __DIR__);
-foreach (glob("*.php") as $file){
+foreach (glob("test.*.php") as $file){
   if ((realpath($file)) == __FILE__) continue;
-  $name = mb_substr($file, 0, -4);
-  if (!is_file("$name.expect")) touch("$name.expect");
+  if (!is_dir("expect")) mkdir("expect", 0755);
+  if (!is_file("expect/$file.txt")) touch("expect/$file.txt");
   $out = array();
   exec('php -f ' . escapeshellarg($file) . ' 2>&1', $out, $exit);
   $out = implode("\n", $out) . "\n";
-  if ($exit > 0 && $exit < 255)
-    $skip += print("SKIPPED $name: $out[0]\n");
-  elseif ($out !== file_get_contents("$name.expect")){
-    $fail += print("FAILED $name\n");
-    file_put_contents("$name.actual", $out);
-    shell_exec('diff -u -- ' . escapeshellarg("$name.expect")
-      . ' ' .  escapeshellarg("$name.actual") . ' > '
-      . escapeshellarg("$name.diff")
-    );
-  }
+  if ($exit == 2)
+    $skip += print("SKIPPED $file\n");
+  elseif ($exit == 3 || ($exit != 1
+      && $out === file_get_contents("expect/$file.txt")))
+    $pass += print("PASSED $file\n");
   else{
-    $pass += print("PASSED $name\n");
-    if (is_file("$name.actual")) unlink("$name.actual");
-    if (is_file("$name.diff")) unlink("$name.diff");
+    $fail += print("FAILED $file\n");
+    file_put_contents("$file.txt", $out);
+    shell_exec('diff -u -- ' . escapeshellarg("expect/$file.txt")
+      . ' ' .  escapeshellarg("$file.txt") . ' > '
+      . escapeshellarg("$file.diff")
+    );
+    continue;
   }
+  if (is_file("$file.txt")) unlink("$file.txt");
+  if (is_file("$file.diff")) unlink("$file.diff");
 }
-printf("PASSED: %d, FAILED: %d, SKIPPED: %d (%.0F ms)\n", $pass, $fail,
-  $skip, (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000);
+printf("TOTAL %d:%d%s (%.0Fms)\n", $pass, $fail,
+  $skip ? " ($skip skipped)" : '',
+  (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000);
 exit($fail ? 1 : 0);
