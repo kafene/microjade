@@ -6,7 +6,8 @@ class Microjade{
     'block' => '~^(if|else|elseif|for|foreach|while|block)\b\s*(.*)$~',
     'php' => '~^(\-|=|\$|\!=?)\s*(.*)$~',
     'html' => '~^([\w\d_\.\#\-]+)(.*)$~',
-    'text' => '~^(\|)?(.*)$~'
+    'comment' => '~^(//\-?)\s*(.*)$~',
+    'text' => '~^(\|)?(.*)$~',
   ];
   protected $token = [
     'open' => null, 'close' => null,
@@ -48,12 +49,28 @@ class Microjade{
       if (preg_match($pattern, $line, $match)){
         if ($name == 'text')
           $token['open'] = $this->parseInline($match[2]);
+        elseif ($name == 'comment'){
+          $token['open'] = '<?php /* ' . $match[2];
+          $token['close'] = ' */ ?>';
+          $token['textBlock'] = true;
+        }
         else
           $token = call_user_func_array([$this, "parse" . ucfirst($name)], $match);
         break;
       }
     }
     return $token;
+  }
+
+  protected function parseInline($input){
+    return preg_replace_callback('~{ (/?) ([^\}\n]*) }~x', function($m){
+      if (preg_match($this->patterns['block'], $m[2])
+         || preg_match($this->patterns['php'], $m[2])){
+        $token = $this->parseLine($m[2]);
+        return empty($m[1]) ? $token['open'] : $token['close'];
+      }
+      return $m[0];
+    }, $input);
   }
 
   protected function parseBlock($line, $type, $code){
@@ -69,6 +86,19 @@ class Microjade{
       if (in_array($type, ['else', 'elseif']))
         $token['else'] = !!$token['close'] = "<?php endif ?>";
     }
+    return $token;
+  }
+
+  protected function parsePhp($line, $type, $code){
+    $token = $this->token;
+    if ($type == '-')
+      $token['open'] = "<?php $code ?>";
+    elseif ($type == '!=' || $type == '!')
+      $token['open'] = "<?php echo $code ?>";
+    elseif ($type == '=')
+      $token['open'] = "<?php echo htmlspecialchars($code, ENT_QUOTES) ?>";
+    elseif ($type == '$')
+      $token['open'] = "<?php echo htmlspecialchars(\$$code, ENT_QUOTES) ?>";
     return $token;
   }
 
@@ -99,29 +129,5 @@ class Microjade{
     else
       $token['open'] .= $this->parseInline($m[8]);
     return $token;
-  }
-
-  protected function parsePhp($line, $type, $code){
-    $token = $this->token;
-    if ($type == '-')
-      $token['open'] = "<?php $code ?>";
-    elseif ($type == '!=' || $type == '!')
-      $token['open'] = "<?php echo $code ?>";
-    elseif ($type == '=')
-      $token['open'] = "<?php echo htmlspecialchars($code, ENT_QUOTES) ?>";
-    elseif ($type == '$')
-      $token['open'] = "<?php echo htmlspecialchars(\$$code, ENT_QUOTES) ?>";
-    return $token;
-  }
-
-  protected function parseInline($input){
-    return preg_replace_callback('~{ (/?) ([^\}\n]*) }~x', function($m){
-      if (preg_match($this->patterns['block'], $m[2])
-         || preg_match($this->patterns['php'], $m[2])){
-        $token = $this->parseLine($m[2]);
-        return empty($m[1]) ? $token['open'] : $token['close'];
-      }
-      return $m[0];
-    }, $input);
   }
 }

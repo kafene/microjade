@@ -48,8 +48,6 @@ For usage in Nette Framework see [nette.md](nette.md).
 
 ## Todo
 
-    // html comment
-    //if lt IE 8
-    <?php block support
-    switch, case, default
+- don't proccess `<?php` block
+- `switch`, `case` and `default` blocks
 

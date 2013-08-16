@@ -1,0 +1,10 @@
+Tests comment nodes in jade
+string(91) "
+
+<?php /* single-line comment */ ?>
+<div>
+  <?php /* multi line
+comment
+here */ ?></div>
+
+"
