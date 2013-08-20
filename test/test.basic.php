@@ -8,7 +8,9 @@ html
   <head>
     title Hello
   </head>
+
   body
+
     .menu
     #content
       ul:

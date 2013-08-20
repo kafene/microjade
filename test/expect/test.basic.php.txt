@@ -1,12 +1,14 @@
 Basic jade structures and element nesting
-string(270) "
+string(272) "
 
 <!DOCTYPE html>
 <html>
   <head>
     <title>Hello</title>
   </head>
+
   <body>
+
     <div class="menu"></div>
     <div id="content">
       <ul>

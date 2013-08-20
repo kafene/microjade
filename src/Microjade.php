@@ -22,7 +22,9 @@ class Microjade{
       $token = $this->emptyToken;
       $indent = mb_strlen($line) - mb_strlen(ltrim($line));
       $indentStr = ($showIndent && !$textBlock) ? str_repeat(' ', $indent) : '';
-      if ($textBlock !== null && $textBlock < $indent)
+      if (trim($line) == '' && $n !== count($lines) - 1)
+        $indentStr = !$indent = PHP_INT_MAX;
+      elseif ($textBlock !== null && $textBlock < $indent)
         $token['open'] = htmlspecialchars(ltrim($line));
       else{
         $token = $this->parseLine($line);
