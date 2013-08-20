@@ -9,6 +9,8 @@ $compile('
 -# comment
 -# {$notphp}
 p= "php in element"
+p- "php in element"
+p.class- "php in element"
 p {="inline code"}
 p {-$x = 1}
 p {$x}

@@ -1,5 +1,5 @@
 Php code in jade
-string(432) "
+string(512) "
 
 <?php $x = "<b>value</b>" ?>
 <?php echo htmlspecialchars("escaped: " . $x, ENT_QUOTES) ?>
@@ -7,6 +7,8 @@ string(432) "
 <?php # comment ?>
 <?php # {$notphp} ?>
 <p><?php echo htmlspecialchars("php in element", ENT_QUOTES) ?></p>
+<p><?php "php in element" ?></p>
+<p class="class"><?php "php in element" ?></p>
 <p><?php echo htmlspecialchars("inline code", ENT_QUOTES) ?></p>
 <p><?php $x = 1 ?></p>
 <p><?php echo htmlspecialchars($x, ENT_QUOTES) ?></p>
