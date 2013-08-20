@@ -10,6 +10,8 @@ html(lang="en" data-type="test" flag  ): body
     li.y(title="item"): b multilevel
   p {="inline code"}
   #id.class.another default element is div
+  p(attr="nested(brackets())")
+  p(attr="nested(brackets())")- print("ok")
   pre.class.
     text
   #id#id2.class#id3 should set id3 only

@@ -106,7 +106,9 @@ class Microjade{
     $token = $this->emptyToken;
     $m = array_fill(0, 5, null);
     preg_match('~^([\w\d\-_]*[\w\d])? ([\.\#][\w\d\-_\.\#]*[\w\d])?
-      (\([^\)]+\))? (/)? (\.)? ((\-|=|\!=?)|:)? \s* (.*) ~x', $line, $m);
+      (\( (?:(?>[^()]+) | (?3))* \))? (/)? (\.)? ((\-|=|\!=?)|:)? \s* (.*) ~x', $line, $m);
+
+
     $token['open'] = empty($m[1]) ? '<div' : "<$m[1]";
     $token['close'] = empty($m[1]) ? '</div>' : "</$m[1]>";
     if (!empty($m[2])){
