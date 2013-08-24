@@ -3,11 +3,11 @@ require_once __DIR__ . '/Microjade.php';
 
 class MicrojadeLatte extends Microjade{
 
-  protected $nettePairs = [
+  protected $nettePairs = array(
     'if', 'elseif', 'else', 'ifset', 'elseifset', 'ifCurrent',
     'foreach', 'for', 'while', 'first', 'last', 'sep', 'capture',
     'cache', 'syntax', 'block', 'define',  'form', 'label', 'snippet'
-  ];
+  );
 
   public function __construct(){
     unset($this->patterns['block']);

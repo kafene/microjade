@@ -2,22 +2,22 @@
 
 class Microjade{
 
-  protected $patterns = [
+  protected $patterns = array(
     'block' => '~^(if|else|elseif|for|foreach|while|block)\b\s*(.*)$~',
     'php' => '~^(\-|=|\$|\!=?)\s*(.*)$~',
     'html' => '~^([\w\d_\.\#\-]+)(.*)$~',
     'comment' => '~^(//\-?)\s*(.*)$~',
     'text' => '~^(\|)?(.*)$~',
-  ];
-  protected $emptyToken = [
+  );
+  protected $emptyToken = array(
     'open' => null, 'close' => null,
     'else' => false, 'textBlock' => false
-  ];
+  );
 
   public function compile($input, $showIndent = false){
     $lines = explode("\n", str_replace("\r", '', $input));
     $output = $textBlock = null;
-    $closing = [];
+    $closing = array();
     foreach ($lines as $n => $line){
       $token = $this->emptyToken;
       $indent = mb_strlen($line) - mb_strlen(ltrim($line));
@@ -57,7 +57,7 @@ class Microjade{
           $token['textBlock'] = true;
         }
         else
-          $token = call_user_func_array([$this, "parse" . ucfirst($name)], $match);
+          $token = call_user_func_array(array($this, "parse" . ucfirst($name)), $match);
         break;
       }
     }
@@ -85,7 +85,7 @@ class Microjade{
       $token['open'] = "<?php $type ($code): ?>";
       if ($type == 'else') $token['open'] = "<?php $type: ?>";
       $token['close'] = "<?php end$type ?>";
-      if (in_array($type, ['else', 'elseif']))
+      if (in_array($type, array('else', 'elseif')))
         $token['else'] = !!$token['close'] = "<?php endif ?>";
     }
     return $token;
