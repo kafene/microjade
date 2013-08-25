@@ -10,8 +10,8 @@ class Microjade{
     'text' => '~^(\|)?(.*)$~',
   );
   protected $emptyToken = array(
-    'open' => null, 'close' => null,
-    'else' => false, 'textBlock' => false
+    'open' => null, 'close' => null, 'line' => null,
+    'else' => false, 'textBlock' => false, 'isBlock' => false,
   );
 
   public function compile($input, $showIndent = false){
@@ -20,14 +20,18 @@ class Microjade{
     $closing = array();
     foreach ($lines as $n => $line){
       $token = $this->emptyToken;
+      $nextLine = isset($lines[$n + 1]) ? $lines[$n + 1] : '';
       $indent = mb_strlen($line) - mb_strlen(ltrim($line));
+      $nextIndent = mb_strlen($nextLine) - mb_strlen(ltrim($nextLine));
+      $token['isBlock'] = ($nextIndent > $indent);
+      $token['line'] = trim($line, "\t\n ");
       $indentStr = ($showIndent && !$textBlock) ? str_repeat(' ', $indent) : '';
       if (trim($line) == '' && $n !== count($lines) - 1)
         $indentStr = !$indent = PHP_INT_MAX;
       elseif ($textBlock !== null && $textBlock < $indent)
         $token['open'] = htmlspecialchars(ltrim($line));
       else{
-        $token = $this->parseLine($line);
+        $token = $this->parseLine($token);
         $textBlock = null;
       }
       foreach (array_reverse($closing, true) as $i => $code){
@@ -44,11 +48,12 @@ class Microjade{
     return $output;
   }
 
-  protected function parseLine($line){
-    $line = trim($line, "\t\n ");
-    $token = $this->emptyToken;
+  protected function parseLine($token){
+    if (is_string($token))
+      $token = array_merge($this->emptyToken, array('line' => $token));
     foreach ($this->patterns as $name => $pattern){
-      if (preg_match($pattern, $line, $match)){
+      if (preg_match($pattern, $token['line'], $match)){
+        $token['match'] = $match;
         if ($name == 'text')
           $token['open'] = $this->parseInline($match[2]);
         elseif ($name == 'comment'){
@@ -57,7 +62,7 @@ class Microjade{
           $token['textBlock'] = true;
         }
         else
-          $token = call_user_func_array(array($this, "parse" . ucfirst($name)), $match);
+          $token = call_user_func(array($this, "parse" . ucfirst($name)), $token);
         break;
       }
     }
@@ -75,8 +80,8 @@ class Microjade{
     }, $input);
   }
 
-  protected function parseBlock($line, $type, $code){
-    $token = $this->emptyToken;
+  protected function parseBlock($token){
+    list($type, $code) = array_slice($token['match'], 1, 2);
     if ($type == 'block'){
       $token['open'] = "<?php if(isset(\$$code)) echo \$$code; else{ ob_start();\$_blocks[]=\"$code\" ?>";
       $token['close'] = '<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?>';
@@ -91,8 +96,8 @@ class Microjade{
     return $token;
   }
 
-  protected function parsePhp($line, $type, $code){
-    $token = $this->emptyToken;
+  protected function parsePhp($token){
+    list($type, $code) = array_slice($token['match'], 1, 2);
     if ($type == '-')
       $token['open'] = "<?php $code ?>";
     elseif ($type == '!=' || $type == '!')
@@ -104,13 +109,10 @@ class Microjade{
     return $token;
   }
 
-  protected function parseHtml($line, $type, $code){
-    $token = $this->emptyToken;
+  protected function parseHtml($token){
     $m = array_fill(0, 5, null);
     preg_match('~^([\w\d\-_]*[\w\d])? ([\.\#][\w\d\-_\.\#]*[\w\d])?
-      (\( (?:(?>[^()]+) | (?3))* \))? (/)? (\.)? ((\-|=|\!=?)|:)? \s* (.*) ~x', $line, $m);
-
-
+      (\( (?:(?>[^()]+) | (?3))* \))? (/)? (\.)? ((\-|=|\!=?)|:)? \s* (.*) ~x', $token['line'], $m);
     $token['open'] = empty($m[1]) ? '<div' : "<$m[1]";
     $token['close'] = empty($m[1]) ? '</div>' : "</$m[1]>";
     if (!empty($m[2])){

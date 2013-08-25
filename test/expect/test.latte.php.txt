@@ -1,5 +1,5 @@
 MicrojadeLatte test
-string(259) "
+string(247) "
 
 {? $x = 1}
 <!DOCTYPE html>
@@ -8,12 +8,12 @@ string(259) "
 {elseif $x == 1}
   <p class="{!$x}">text</p>
 {else}
-   text{/if}
+   text{/}
 <div class="footer">{}</div>
 {cache}
-  <p>cached</p>{/cache}
+  <p>cached</p>{/}
 {block a}
-  <b>inblock</b>{/block}
+  <b>inblock</b>{/}
 {? nopair}
 <div class="end"></div>
 "

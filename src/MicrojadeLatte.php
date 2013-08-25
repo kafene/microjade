@@ -3,27 +3,19 @@ require_once __DIR__ . '/Microjade.php';
 
 class MicrojadeLatte extends Microjade{
 
-  protected $nettePairs = array(
-    'if', 'elseif', 'else', 'ifset', 'elseifset', 'ifCurrent',
-    'foreach', 'for', 'while', 'first', 'last', 'sep', 'capture',
-    'cache', 'syntax', 'block', 'define',  'form', 'label', 'snippet'
-  );
-
   public function __construct(){
     unset($this->patterns['block']);
   }
 
-  protected function parsePhp($line, $type, $code){
-    $token = $this->emptyToken;
+  protected function parsePhp($token){
+    list($type, $code) = array_slice($token['match'], 1, 2);
     if ($type == '-'){
       $token['open'] = "{? $code}";
       $keyword = preg_replace('~\s.*~', '', $code);
-      if (in_array($keyword, $this->nettePairs)){
+      if ($token['isBlock']){
         $token['open'] = "{{$code}}";
         $token['else'] = (mb_strpos($keyword, 'else') === 0);
-        $keyword = str_replace('else', '', $keyword);
-        $keyword = $keyword ?: 'if';
-        $token['close'] = "{/$keyword}";
+        $token['close'] = "{/}";
       }
     }
     elseif ($type == '!=' || $type == '!')
