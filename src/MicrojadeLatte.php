@@ -8,22 +8,22 @@ class MicrojadeLatte extends Microjade{
   }
 
   protected function parsePhp($token){
-    list($type, $code) = array_slice($token['match'], 1, 2);
+    list($type, $code) = array_slice($token->match, 1, 2);
     if ($type == '-'){
-      $token['open'] = "{? $code}";
+      $token->open = "{? $code}";
       $keyword = preg_replace('~\s.*~', '', $code);
-      if ($token['isBlock']){
-        $token['open'] = "{{$code}}";
-        $token['else'] = (mb_strpos($keyword, 'else') === 0);
-        $token['close'] = "{/}";
+      if ($token->isBlock){
+        $token->open = "{{$code}}";
+        $token->else = (mb_strpos($keyword, 'else') === 0);
+        $token->close = "{/}";
       }
     }
     elseif ($type == '!=' || $type == '!')
-      $token['open'] = "{!$code}";
+      $token->open = "{!$code}";
     elseif ($type == '=')
-      $token['open'] = "{{$code}}";
+      $token->open = "{{$code}}";
     elseif ($type == '$')
-      $token['open'] = "{\$$code}";
+      $token->open = "{\$$code}";
     return $token;
   }
 
