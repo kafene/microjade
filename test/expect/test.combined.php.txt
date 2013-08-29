@@ -1,0 +1,15 @@
+Code inside php blocks should be left untouched
+string(192) "<?php
+
+$some = "variable";
+
+?>
+<html>
+  <body><?php echo htmlspecialchars($some, ENT_QUOTES) ?>
+    <div id="one"></div>
+    <div id="two"></div></body></html>
+<?php
+  "another";
+  "code";
+?>
+"

@@ -52,6 +52,5 @@ Inline macros are left untouched for Latte output.
 
 ## Todo
 
-- don't proccess `<?php` block
 - `switch`, `case` and `default` blocks
 

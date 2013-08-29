@@ -1,6 +1,5 @@
 MicrojadeLatte test
-string(247) "
-
+string(246) "
 {? $x = 1}
 <!DOCTYPE html>
 {if $x > 1}

@@ -1,6 +1,5 @@
 Html elements in jade
-string(520) "
-
+string(519) "
 <!DOCTYPE html>
 <html lang="en" data-type="test" flag><body>
   <head><link rel="selfclosing" /></head>

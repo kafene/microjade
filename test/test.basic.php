@@ -2,8 +2,7 @@ Basic jade structures and element nesting
 <?php
 require __DIR__ . '/setup.php';
 
-$compile('
-<!DOCTYPE html>
+$compile('<!DOCTYPE html>
 html
   <head>
     title Hello
@@ -17,5 +16,4 @@ html
         | text
         li: b item1
         li: b item2
-        li: b item3
-');
+        li: b item3');

@@ -1,6 +1,5 @@
 Comment blocks in jade
-string(90) "
-
+string(89) "
 <?php /* single-line comment */ ?>
 <div>
   <?php /* multi line

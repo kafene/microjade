@@ -1,6 +1,5 @@
 Php blocks in jade
-string(705) "
-
+string(704) "
 <?php $i = 1 ?>
 <blocks>
   <?php if(isset($content)) echo $content; else{ ob_start();$_blocks[]="content" ?>

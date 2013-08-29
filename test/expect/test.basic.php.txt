@@ -1,7 +1,5 @@
 Basic jade structures and element nesting
-string(272) "
-
-<!DOCTYPE html>
+string(270) "<!DOCTYPE html>
 <html>
   <head>
     <title>Hello</title>

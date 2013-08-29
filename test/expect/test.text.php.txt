@@ -1,6 +1,5 @@
 Text blocks in jade
-string(214) "
-
+string(213) "
 <?php $x = 1 ?>
 <p>unescaped text in html > <?php echo htmlspecialchars($x, ENT_QUOTES) ?></p>
  unescaped text block > <?php echo htmlspecialchars($x, ENT_QUOTES) ?>

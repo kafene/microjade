@@ -15,8 +15,8 @@ class Microjade{
   );
 
   public function compile($input, $showIndent = false){
-    $lines = explode("\n", str_replace("\r", '', $input));
-    $output = $textBlock = null;
+    $lines = explode("\n", str_replace("\r", '', rtrim($input, " \t\n") . "\n"));
+    $output = $textBlock = $phpCode = null;
     $closing = array();
     foreach ($lines as $n => $line){
       $token = $this->emptyToken;
@@ -26,7 +26,7 @@ class Microjade{
       $token['isBlock'] = ($nextIndent > $indent);
       $token['line'] = trim($line, "\t\n ");
       $indentStr = ($showIndent && !$textBlock) ? str_repeat(' ', $indent) : '';
-      if (trim($line) == '' && $n !== count($lines) - 1)
+      if (trim($line) == '' && !($n === count($lines) - 1 || mb_strpos($nextLine, '<?php') === 0))
         $indentStr = !$indent = PHP_INT_MAX;
       elseif ($textBlock !== null && $textBlock < $indent)
         $token['open'] = htmlspecialchars(ltrim($line));
@@ -41,11 +41,18 @@ class Microjade{
           unset($closing[$i]);
         }
       }
-      $output .= "\n" . $indentStr . $token['open'];
+      if ($n !== 0) $output .= "\n";
+      if (mb_strpos($line, '<?php') === 0) $phpCode = true;
+      if ($phpCode){
+        $output .= "$line";
+        if (mb_strpos($line, '?>') === 0) $phpCode = false;
+        continue;
+      }
+      $output .= $indentStr . $token['open'];
       $closing[$indent] = $token['close'];
       if ($token['textBlock']) $textBlock = $indent;
     }
-    return $output;
+    return rtrim($output, " \t\n") . "\n";
   }
 
   protected function parseLine($token){
