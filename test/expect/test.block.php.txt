@@ -1,21 +1,21 @@
 Php blocks in jade
-string(718) "
+string(705) "
 
 <?php $i = 1 ?>
 <blocks>
   <?php if(isset($content)) echo $content; else{ ob_start();$_blocks[]="content" ?>
     hello<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?>
-  <?php if (true): ?>
+  <?php if (true){ ?>
     <p>ok</p>
-    <?php if (false): ?>
+    <?php if (false){ ?>
       <p>nested</p>
-    <?php else: ?>
-      <p>nested</p><?php endif ?>
-  <?php else: ?>
-    <p>liar</p><?php endif ?>
-  <ul><?php while ($i <= 3): ?>
-    <li><?php echo htmlspecialchars($i++, ENT_QUOTES) ?></li><?php endwhile ?></ul></blocks>
+    <?php } else{ ?>
+      <p>nested</p><?php } ?>
+  <?php } else{ ?>
+    <p>liar</p><?php } ?>
+  <ul><?php while ($i <= 3){ ?>
+    <li><?php echo htmlspecialchars($i++, ENT_QUOTES) ?></li><?php } ?></ul></blocks>
 <inline>
-  <?php if (true): ?>x<?php else: ?>y<?php endif ?>
+  <?php if (true){ ?>x<?php } else{ ?>y<?php } ?>
   <?php if(isset($content)) echo $content; else{ ob_start();$_blocks[]="content" ?>world<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?></inline>
 "

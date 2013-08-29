@@ -10,8 +10,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter{
 
   public function templatePrepareFilters($template){
     $template->registerFilter(function($input) use ($template){
-      if (mb_substr($template->getFile(), -5) == '.jade')
-        return (new MicrojadeLatte)->compile($input);
+      if (mb_substr($template->getFile(), -5) == '.jade'){
+        $microjade = new MicrojadeLatte;
+        return $microjade->compile($input);
+      }
       else return $input;
     });
     parent::templatePrepareFilters($template);

@@ -1,7 +1,11 @@
 Php code in jade
-string(512) "
+string(685) "
 
 <?php $x = "<b>value</b>" ?>
+<ul><?php foreach (array(1, 2) as $i){ ?>
+  <li><?php echo htmlspecialchars($i, ENT_QUOTES) ?></li><?php } ?></ul>
+<?php while (is_int("x")){ ?>
+  <div>test</div><?php } ?>
 <?php echo htmlspecialchars("escaped: " . $x, ENT_QUOTES) ?>
 <?php echo "unescaped: " . $x ?>
 <?php # comment ?>

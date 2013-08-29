@@ -2,7 +2,8 @@
 require __DIR__ . '/../src/Microjade.php';
 
 $compile = function($s){
-  $php = (new Microjade)->compile($s, true);
+  $mjade = new Microjade;
+  $php = $mjade->compile($s, true);
   var_dump($php);
   ob_start();
   eval('?>' . $php);

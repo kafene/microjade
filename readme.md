@@ -28,12 +28,15 @@ For usage in Nette Framework see [nette.md](nette.md).
     != $var          - unescaped variable
     -# comment       - single-line comment
     // comment       - html block comment
-    textarea.        - unformated block
+    script.          - unformated block
     if, while, for.. - php blocks
     block name       - print $name or saves block to $name
 
 
-## Inline macros (only for PHP output)
+## Inline macros
+
+These macros can be used anywhere in template except in unformated blocks (like `script.`).
+Inline macros are left untouched for Latte output.
 
     {$var}                   - prints escaped variable
     {!$var}                  - prints unescaped variable

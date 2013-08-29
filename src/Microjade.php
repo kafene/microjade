@@ -87,19 +87,22 @@ class Microjade{
       $token['close'] = '<?php $_block=array_pop($_blocks);echo $$_block=ob_get_clean();}?>';
     }
     else{
-      $token['open'] = "<?php $type ($code): ?>";
-      if ($type == 'else') $token['open'] = "<?php $type: ?>";
-      $token['close'] = "<?php end$type ?>";
-      if (in_array($type, array('else', 'elseif')))
-        $token['else'] = !!$token['close'] = "<?php endif ?>";
+      $code = preg_replace('~^\s*\( (.*) \)\s*$~x', '\\1', $code);
+      $token['open'] = "<?php $type ($code){ ?>";
+      if ($type == 'else') $token['open'] = "<?php } $type{ ?>";
+      $token['close'] = "<?php } ?>";
+      $token['else'] = in_array($type, array('else', 'elseif'));
     }
     return $token;
   }
 
   protected function parsePhp($token){
     list($type, $code) = array_slice($token['match'], 1, 2);
-    if ($type == '-')
+    if ($type == '-'){
       $token['open'] = "<?php $code ?>";
+      if (preg_match($this->patterns['block'], $code))
+        $token = $this->parseLine($code);
+    }
     elseif ($type == '!=' || $type == '!')
       $token['open'] = "<?php echo $code ?>";
     elseif ($type == '=')
