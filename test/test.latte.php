@@ -15,6 +15,8 @@ $compileLatte('
   p(class="{!$x}") text
 - else
   | text
+ul- foreach array(1, 2) as $i
+  li= $i
 .footer {}
 - cache
   p cached

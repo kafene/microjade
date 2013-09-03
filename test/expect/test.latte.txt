@@ -1,5 +1,5 @@
 MicrojadeLatte test
-string(246) "
+string(302) "
 {? $x = 1}
 <!DOCTYPE html>
 {if $x > 1}
@@ -8,6 +8,8 @@ string(246) "
   <p class="{!$x}">text</p>
 {else}
    text{/}
+<ul>{foreach array(1, 2) as $i}
+  <li>{$i}</li>{/}</ul>
 <div class="footer">{}</div>
 {cache}
   <p>cached</p>{/}

@@ -51,7 +51,7 @@ class Microjade{
     return rtrim($output, " \t\n") . "\n";
   }
 
-  protected function createToken($line = false){
+  protected function createToken($line = null){
     return (object) array('open' => null, 'close' => null, 'line' => $line,
       'else' => false, 'textBlock' => false, 'isBlock' => false);
   }
@@ -139,9 +139,11 @@ class Microjade{
     $token->open .= empty($m[4]) ? '>' : " />";
     $token->textBlock = !empty($m[5]);
     if (!empty($m[6])){
-      $nexttoken = $this->parseLine($m[7] . $m[8]);
-      $token->open .= $nexttoken->open;
-      $token->close = $nexttoken->close . $token->close;
+      $nextToken = $this->createToken($m[7] . $m[8]);
+      $nextToken->isBlock = $token->isBlock;
+      $nextToken = $this->parseLine($nextToken);
+      $token->open .= $nextToken->open;
+      $token->close = $nextToken->close . $token->close;
     }
     else
       $token->open .= $this->parseInline($m[8]);
